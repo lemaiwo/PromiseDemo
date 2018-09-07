@@ -1,0 +1,24 @@
+<mvc:View controllerName="be.wl.PromisesDemo.controller.Main" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true" xmlns="sap.m">
+	<App id="idAppControl">
+		<pages>
+			<Page title="{i18n>title}">
+				<content>
+					<ProgressIndicator class="sapUiSmallMarginBottom" percentValue="{view>/progress}" showValue="false" state="None"/>
+					<List headerText="Suppliers" items="{ path: 'nw>/Suppliers' }">
+						<StandardListItem title="{nw>SupplierID} {nw>CompanyName}"/>
+					</List>
+					<!--<List-->
+					<!--	items="{path : '/Suppliers', parameters:{expand: 'Products/Category'}, filters : [{ path : 'CompanyName', operator : 'EQ', value1 : 'Exotic Liquids' }] }">-->
+					<!--	<CustomListItem >-->
+					<!--		<Text text="Suppliers- {SupplierID} {CompanyName}"/>-->
+					<!--		<List items="{path: 'Products'}">-->
+					<!--			<ObjectListItem title="Product Name- {ProductID} {ProductName}" intro="Product Description- {Category/CategoryName}" />-->
+					<!--		</List>-->
+					<!--	</CustomListItem>-->
+					<!--</List>-->
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
