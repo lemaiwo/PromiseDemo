@@ -14,20 +14,17 @@ sap.ui.define([
 			var oViewModel = new JSONModel({
 				progress: 10
 			});
-			var aFilters = [new Filter("Country", FilterOperator.EQ, "Germany")];
+			var aFilters = [new Filter("Address/City", FilterOperator.EQ, "Redmond")];
 			me.getView().setModel(oViewModel, "view");
 			this.getOwnerComponent().getModel().metadataLoaded()
-				.then(NorthwindService.getSupplierById.bind(NorthwindService, "1"))
+				.then(NorthwindService.getSupplierById.bind(NorthwindService, "20"))
 				.then(function (oSupplier) {
 					oViewModel.setProperty("/progress", 30);
 					MessageToast.show("Company name of the first Supplier:" + oSupplier.data.CompanyName);
 					return true;
-				})
-				.then(NorthwindService.getSupplierById.bind(NorthwindService, "5"))
-				.then(function (oSupplier) {
-					oViewModel.setProperty("/progress", 40);
-					MessageToast.show("Company name of the fifth Supplier:" + oSupplier.data.CompanyName);
-					return true;
+				}).catch(function (error) {
+					MessageToast.show("Supplier with ID 20 does not exist");
+					jQuery.sap.log.error("Supplier with ID 20 does not exist");
 				})
 				.then(NorthwindService.getSuppliersWithFilter.bind(NorthwindService, aFilters))
 				.then(function (aSuppliers) {
@@ -41,6 +38,38 @@ sap.ui.define([
 					me.getView().setModel(new JSONModel({
 						Suppliers: response.data.results
 					}), "nw");
+				})
+				.catch(function (error) {
+					jQuery.sap.log.error("This should never have happened:" + error);
+				});
+		},
+		generateNewSupplier: function (oEvent) {
+			var me = this;
+			var oNewSupplier = {
+				Name: "Test" + new Date().getTime(),
+				Address: {
+					Street: "TestStreet",
+					City: "TestCity",
+					State: "TestState",
+					ZipCode: "TestZip",
+					Country: "Belgium"
+				}
+			};
+			NorthwindService.geSupplierNextID().then(function (id) {
+					oNewSupplier.ID = id;
+					return NorthwindService.createSupplier(oNewSupplier).catch(function (error) {
+						jQuery.sap.log.error("Error during create:" + error);
+					});
+				}).then(function (response) {
+					MessageToast.show("Suppliers created!");
+					return NorthwindService.getSuppliers();
+				}).then(function (response) {
+					me.getView().setModel(new JSONModel({
+						Suppliers: response.data.results
+					}), "nw");
+				})
+				.catch(function (error) {
+					jQuery.sap.log.error("Error refreshing data:" + error);
 				});
 		}
 	});

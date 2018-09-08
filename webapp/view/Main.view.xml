@@ -3,20 +3,14 @@
 	<App id="idAppControl">
 		<pages>
 			<Page title="{i18n>title}">
+				<headerContent>
+					<Button icon="sap-icon://add" tooltip="Generate" press=".generateNewSupplier"/>
+				</headerContent>
 				<content>
 					<ProgressIndicator class="sapUiSmallMarginBottom" percentValue="{view>/progress}" showValue="false" state="None"/>
 					<List headerText="Suppliers" items="{ path: 'nw>/Suppliers' }">
-						<StandardListItem title="{nw>SupplierID} {nw>CompanyName}"/>
+						<StandardListItem title="{nw>ID} {nw>Name}"/>
 					</List>
-					<!--<List-->
-					<!--	items="{path : '/Suppliers', parameters:{expand: 'Products/Category'}, filters : [{ path : 'CompanyName', operator : 'EQ', value1 : 'Exotic Liquids' }] }">-->
-					<!--	<CustomListItem >-->
-					<!--		<Text text="Suppliers- {SupplierID} {CompanyName}"/>-->
-					<!--		<List items="{path: 'Products'}">-->
-					<!--			<ObjectListItem title="Product Name- {ProductID} {ProductName}" intro="Product Description- {Category/CategoryName}" />-->
-					<!--		</List>-->
-					<!--	</CustomListItem>-->
-					<!--</List>-->
 				</content>
 			</Page>
 		</pages>

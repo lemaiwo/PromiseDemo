@@ -15,7 +15,7 @@
 		},
 		"dataSources": {
 			"Northwind.svc": {
-				"uri": "/Northwind/V3/Northwind/Northwind.svc/",
+				"uri": "/Northwind/V2/(S(mo4mpsdbi0fygmzhfv5ik5gf))/OData/OData.svc/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
