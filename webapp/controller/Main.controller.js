@@ -11,11 +11,13 @@ sap.ui.define([
 	return Controller.extend("be.wl.PromisesDemo.controller.Main", {
 		onInit: function () {
 			var me = this;
+
 			var oViewModel = new JSONModel({
 				progress: 10
 			});
 			var aFilters = [new Filter("Address/City", FilterOperator.EQ, "Redmond")];
 			me.getView().setModel(oViewModel, "view");
+
 			this.getOwnerComponent().getModel().metadataLoaded()
 				.then(NorthwindService.getSupplierById.bind(NorthwindService, "20"))
 				.then(function (oSupplier) {
@@ -29,7 +31,7 @@ sap.ui.define([
 				.then(NorthwindService.getSuppliersWithFilter.bind(NorthwindService, aFilters))
 				.then(function (aSuppliers) {
 					oViewModel.setProperty("/progress", 70);
-					MessageToast.show("Suppliers in Germany:" + aSuppliers.data.results.length);
+					MessageToast.show("Suppliers in Redmond:" + aSuppliers.data.results.length);
 					return true;
 				})
 				.then(NorthwindService.getSuppliers.bind(NorthwindService))
@@ -57,18 +59,17 @@ sap.ui.define([
 			};
 			NorthwindService.geSupplierNextID().then(function (id) {
 					oNewSupplier.ID = id;
-					return NorthwindService.createSupplier(oNewSupplier).catch(function (error) {
-						jQuery.sap.log.error("Error during create:" + error);
-					});
+					return NorthwindService.createSupplier(oNewSupplier);
 				}).then(function (response) {
 					MessageToast.show("Suppliers created!");
-					return NorthwindService.getSuppliers();
-				}).then(function (response) {
+				}).catch(function (error) {
+					jQuery.sap.log.error("Error during create:" + error);
+				}).then(NorthwindService.getSuppliers.bind(NorthwindService))
+				.then(function (response) {
 					me.getView().setModel(new JSONModel({
 						Suppliers: response.data.results
 					}), "nw");
-				})
-				.catch(function (error) {
+				}).catch(function (error) {
 					jQuery.sap.log.error("Error refreshing data:" + error);
 				});
 		}
