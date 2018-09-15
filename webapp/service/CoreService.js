@@ -19,7 +19,7 @@ sap.ui.define([
 						if (data) {
 							args.push(data);
 						}
-						if(parameters){
+						if (parameters) {
 							params = parameters;
 						}
 						params.success = function (result, response) {
@@ -72,17 +72,15 @@ sap.ui.define([
 							}
 						}
 						if (args && (method === 'POST' || method === 'PUT')) {
-							var data = new FormData();
+							client.setRequestHeader("accept", "application/json");
+							client.setRequestHeader("content-type", "application/json");
+							var data = {};
 							for (var keyp in args) {
 								if (args.hasOwnProperty(keyp)) {
-									data.append(keyp, args[keyp]);
+									data[keyp] = args[keyp];
 								}
 							}
-							if (data.fd) {
-								data = data.fd;
-							}
 						}
-
 						client.open(method, uri);
 						for (var keyh in headers) {
 							if (headers.hasOwnProperty(keyh)) {
@@ -90,7 +88,7 @@ sap.ui.define([
 							}
 						}
 						if (data) {
-							client.send(data);
+							client.send(JSON.stringify(data));
 						} else {
 							client.send();
 						}
