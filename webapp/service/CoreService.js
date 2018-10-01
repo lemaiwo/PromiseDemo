@@ -72,8 +72,6 @@ sap.ui.define([
 							}
 						}
 						if (args && (method === 'POST' || method === 'PUT')) {
-							client.setRequestHeader("accept", "application/json");
-							client.setRequestHeader("content-type", "application/json");
 							var data = {};
 							for (var keyp in args) {
 								if (args.hasOwnProperty(keyp)) {
@@ -82,6 +80,10 @@ sap.ui.define([
 							}
 						}
 						client.open(method, uri);
+						if (method === 'POST' || method === 'PUT') {
+							client.setRequestHeader("accept", "application/json");
+							client.setRequestHeader("content-type", "application/json");
+						}
 						for (var keyh in headers) {
 							if (headers.hasOwnProperty(keyh)) {
 								client.setRequestHeader(keyh, headers[keyh]);
